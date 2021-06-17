@@ -17,20 +17,31 @@ const urlencodedParser = bodyParser.urlencoded({extended:false});
 
 // ---------------------------- Routes for Trainers Table -------------------------------- //
 
-//GET all trainers only
-router.get("/trainers/get", (req,res) =>{
-	db.Trainers.findAll().then(trainers => res.send(trainers));
-})
 
 
-// GET all the trainer with pokemon.
+/** 
+ * 	GET all the trainers with and Pokemons they own 
+ * 
+*/
 router.get("/trainers/getall",(req,res) => {
 	db.Trainers.findAll({
 		include: [db.Pokemons]
 	}).then(trainers => res.send(trainers));
 })
 
-// POST a trainer OG
+
+/** 
+ * 	GET all the trainers only  
+ * 
+*/
+router.get("/trainers/get", (req,res) =>{
+	db.Trainers.findAll().then(trainers => res.send(trainers));
+})
+
+/** 
+ * 	POST a Trainer  
+ * 
+*/
 router.post('/trainers/post',jsonParser,(req,res)=>{
 	db.Trainers.create({
 		Name: req.body.Name,
@@ -38,7 +49,10 @@ router.post('/trainers/post',jsonParser,(req,res)=>{
 	}).then(submitedTrainer => res.send(submitedTrainer));
 })
 
-// DELETE a Trainer OG
+/** 
+ * 	GET all the trainer with and Pokemon they own 
+ * 
+*/
 router.delete('/trainers/delete',jsonParser,(req,res)=>{
 	db.Trainers.destroy({
 		where:{
@@ -50,7 +64,10 @@ router.delete('/trainers/delete',jsonParser,(req,res)=>{
 
 })
 
-// Find all the trainer with pokemon.
+/** 
+ * 	Find a trainer using their name or pokemon 
+ * 
+*/
 router.get("/trainers/find/:Name",(req,res) => {
 	db.Trainers.findAll({
 		//where:{Name: req.body.Name}
@@ -63,12 +80,19 @@ router.get("/trainers/find/:Name",(req,res) => {
 
 // ---------------------------- Routes for Pokemon Table -------------------------------- //
 
-// GET all pokemon only
+/** 
+ * 	GET all the Pokemon 
+ * 
+*/
 router.get("/pokemons/get", (req,res) =>{
 	db.Pokemons.findAll().then(pokemons => res.send(pokemons));
 })
 
-// POST a pokemon
+/** 
+ * 	POST a pokemon on a Trainer's party
+ * 
+ *
+*/
 router.post('/pokemons/post',jsonParser,(req,res)=>{
 	db.Pokemons.create({
 		ID: req.body.ID,
@@ -81,14 +105,19 @@ router.post('/pokemons/post',jsonParser,(req,res)=>{
 })
 
 
-// DELETE a Pokemon 
+/** 
+ * 	DELETE a pokemon using its ID column 
+ * 
+*/
 router.delete('/pokemons/delete',jsonParser,(req,res)=>{
 	db.Pokemons.destroy({
 		where:{
-			ID: req.body.ID // Make sure to fill in body instead of params
+			instance: req.body.instance // Make sure to fill in body instead of params
 		}
 	}).then(() => res.send("success"));
 
 })
 
 module.exports = router;
+
+

@@ -1,10 +1,16 @@
 // Pokemon table in MYSQL
 module.exports = (sequelize,DataTypes)=>{
 	const Pokemons = sequelize.define("Pokemons", {
+		instance:{
+			type: DataTypes.INTEGER,
+			autoIncrement: true,
+			primaryKey:true,
+			allowNull: false,
+		},
 		ID: {
 			type: DataTypes.INTEGER,
 			allowNull:false,
-			primaryKey: true // This is so that id col will not be generated
+			//primaryKey: true // This is so that id col will not be generated
 		},
 		Name: {
 			type: DataTypes.STRING,
@@ -23,10 +29,10 @@ module.exports = (sequelize,DataTypes)=>{
 		timestamps: false 
 		// This is so that createAt and updateAT will not be generated
 	});
-	Pokemons.associate = models => {
-		Pokemons.belongsTo(models.Trainers, {
-			onDelete: 'restrict'
-		})
-	}
+	// Pokemons.associate = models => {
+	// 	Pokemons.belongsTo(models.Trainers, {
+	// 		onDelete: 'restrict'
+	// 	})
+	// }
 	return Pokemons;
 };

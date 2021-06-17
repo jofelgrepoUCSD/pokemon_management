@@ -18,6 +18,7 @@ const AddTrainer = () => {
 			console.log(res)
 		})
 		history.push('/')
+		window.location.reload();
 	}
 
 	return (

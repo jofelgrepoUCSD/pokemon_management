@@ -5,7 +5,7 @@ import Navbar from './components/NavBar';
 import Trainer from './components/Trainers';
 import {Route,Switch,BrowserRouter} from 'react-router-dom';
 import Home from './components/Home';
-import Search from './components/Search';
+import SearchTrainer from './components/SearchTrainer';
 import AddPokemon from './components/AddPokemon';
 import AddTrainer from './components/AddTrainer';
 
@@ -18,14 +18,10 @@ function App() {
       <Navbar/>
       <Switch>
           <Route exact path="/" component={Home}></Route>
-          <Route path='/search' component={Search}></Route>
+          <Route path='/search' component={SearchTrainer}></Route>
           <Route path='/addPokemon/:trainer' component={AddPokemon}></Route>
           <Route path='/addTrainer' component={AddTrainer}></Route>
-          {/* <Route path='/trainer/:Name' component={Trainer} */}
       </Switch>
-        {/* <button ></button>
-        <Navbar></Navbar>
-        <Trainer></Trainer> */}
        </div>
     </BrowserRouter>
   ) 

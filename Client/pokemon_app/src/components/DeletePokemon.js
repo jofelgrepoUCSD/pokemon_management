@@ -12,7 +12,7 @@ const DeletePokemon = (props) => {
 	const handleDelete = () =>{
 		// Temporary need a redux action here
 		axios.delete("http://localhost:3001/api/pokemons/delete", 
-		{data: {ID: pokemon.ID }}
+		{data: {instance: pokemon.instance }}
 		).then((res)=>{
 			console.log(res)
 		})
