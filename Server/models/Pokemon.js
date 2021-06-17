@@ -1,6 +1,6 @@
-// Pokemon tablee in MYSQL
+// Pokemon table in MYSQL
 module.exports = (sequelize,DataTypes)=>{
-	const Pokemon = sequelize.define("Pokemon", {
+	const Pokemons = sequelize.define("Pokemons", {
 		ID: {
 			type: DataTypes.INTEGER,
 			allowNull:false,
@@ -17,10 +17,16 @@ module.exports = (sequelize,DataTypes)=>{
 		Type: {
 			type: DataTypes.STRING,
 			allowNull:false
-		}
+		},
 	}, {
+		freezeTableName: true,
 		timestamps: false 
 		// This is so that createAt and updateAT will not be generated
 	});
-	return Pokemon;
+	Pokemons.associate = models => {
+		Pokemons.belongsTo(models.Trainers, {
+			onDelete: 'restrict'
+		})
+	}
+	return Pokemons;
 };
