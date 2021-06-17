@@ -39,7 +39,7 @@ router.post('/trainers/post',jsonParser,(req,res)=>{
 })
 
 // DELETE a Trainer OG
-router.delete('/trainers/delete',urlencodedParser,(req,res)=>{
+router.delete('/trainers/delete',jsonParser,(req,res)=>{
 	db.Trainers.destroy({
 		where:{
 			Name: req.body.Name // Make sure to fill in body instead of params
@@ -76,13 +76,13 @@ router.post('/pokemons/post',jsonParser,(req,res)=>{
 		Move: req.body.Move,
 		Type: req.body.Type,
 		// This is the foreign key
-		TrainerName: req.body.owner
-	}).then(submitedPokemons => res.send(submitedPokemons));
+		TrainerName: req.body.TrainerName
+	}).then(submitedPokemons => res.send(submitedPokemons)).catch((err)=> console.log("Erorr,Check Duplicate"));
 })
 
 
 // DELETE a Pokemon 
-router.delete('/pokemons/delete',urlencodedParser,(req,res)=>{
+router.delete('/pokemons/delete',jsonParser,(req,res)=>{
 	db.Pokemons.destroy({
 		where:{
 			ID: req.body.ID // Make sure to fill in body instead of params
@@ -92,22 +92,3 @@ router.delete('/pokemons/delete',urlencodedParser,(req,res)=>{
 })
 
 module.exports = router;
-
-// POST a pokemon
-// router.post('/pokemons/post',urlencodedParser,(req,res)=>{
-// 	db.Pokemons.create({
-// 		ID: req.body.ID,
-// 		Name: req.body.Name,
-// 		Move: req.body.Move,
-// 		Type: req.body.Type,
-// 		owner: req.body.owner
-// 	}).then(db.Trainers.update({Pokemon_owned:'78'}, {where: {Name: req.body.owner}})
-// 	 ).then(submitedPokemons => res.send(submitedPokemons));
-// })
-
-// router.get("/pokemons/get/:TrainerName", (req,res) =>{
-// 	db.Pokemons.findAll({
-// 		include: [db.Trainers],
-// 		where: {TrainerName:req.params.TrainerName},
-// 	}).then(pokemons => res.send(pokemons));
-// })

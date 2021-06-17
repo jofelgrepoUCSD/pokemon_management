@@ -1,35 +1,32 @@
+import qs from 'qs';
 import axios from 'axios';
 import {useEffect,useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
+import {useHistory,Link} from 'react-router-dom';
 import '../index.css';
 
-const AddTrainer = () => {
+const DeletePokemon = (props) => {
 
-	const [name,setName] = useState("");
-	const [owned,setOwned] = useState(null);
+	const {pokemon} = props;
 	const history = useHistory();
-
-	const submitValue = () => {
+	
+	const handleDelete = () =>{
 		// Temporary need a redux action here
-		axios.post("http://localhost:3001/api/trainers/post", {
-			Name: name,
-			Pokemon_owned: owned,
-		}).then((res)=>{
+		axios.delete("http://localhost:3001/api/pokemons/delete", 
+		{data: {ID: pokemon.ID }}
+		).then((res)=>{
 			console.log(res)
 		})
-		history.push('/')
+		window.location.reload();
 	}
 
 	return (
-		<div className="trainer-title">
-		<h1 className="add-trainer-title"> Add a Trainer</h1>
-		<input className="enter-name" tpye="text" placeholder="Name" onChange={e => setName(e.target.value)}></input>
-		<br></br>
-		<button className="add-trainer-button" onClick={submitValue}> ADD </button>
+		<div className="dlt-pokemon">
+			<button className="myButton" onClick={handleDelete}>Delete</button>
 		</div>	
+
 	 );
 }
-export default AddTrainer;
+export default DeletePokemon;
 
 		// <div>
 		// 	<form className="edit-form" onSubmit={this.handleSubmit}>

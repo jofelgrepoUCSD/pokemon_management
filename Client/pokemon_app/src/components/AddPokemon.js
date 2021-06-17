@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {useEffect,useState} from 'react';
-import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 import '../index.css';
 
 
@@ -9,22 +10,26 @@ const AddPokemon = (props) => {
 	// This is the trainer that was clicked
 	const {trainer} = props.match.params;
 
-	const [id,setID] = useState("");
+	const history = useHistory();
+
+	const [id,setID] = useState(0);
 	const [name,setName] = useState("");
 	const [move,setMove] = useState("");
 	const [type,setType] = useState("");
 
 	const submitValue = () => {
 		// Temporary need a redux action here
-		// axios.post("http://localhost:3001/api/pokemons/post", {
-		// 	ID: id,
-		// 	Name: name,
-		// 	Move: move,
-		// 	Type: type,
-		// 	TrainerName: trainer,
-		// }).then((res)=>{
-		// 	console.log(res)
-		// })
+		axios.post("http://localhost:3001/api/pokemons/post", {
+			ID: id,
+			Name: name,
+			Move: move,
+			Type: type,
+			TrainerName: trainer,
+		}).then((res)=>{
+			console.log(res)
+		})
+		history.push('/');
+		window.location.reload();
 	}
 	return ( 
 		<div className="add-poke-container">
