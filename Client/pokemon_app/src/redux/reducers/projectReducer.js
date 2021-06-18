@@ -17,12 +17,44 @@ export const projectReducer = (state = initialState, {type,payload}) => {
 		case ActionTypes.ADD_TRAINER:
 			return {...state,
 					project: [...state.project,payload]}
+
+
+
+		case ActionTypes.ADD_POKEMON:
+
+				let store = state.project;
+				for(var i = 0; i < store.length; i++){
+					if(store.Name === payload.TrianerName){
+						return {
+							...state, project: [...state.project.Name,"Sheesh"]
+						}
+					}
+				}
+			
+
+
+
+
+
+
 		default:
 			return state;
+
+
+
+
+
+
 	};
 };
 
 
+		// case ActionTypes.ADD_POKEMON:
+		// 	return { ...state,
+		// 			project: state.project.map((post) =>
+		// 				   post.Name === payload.TrainerName ? 
+		// 				   { ...post.Pokemon, payload } : post),
+		// 	}
 					// Find Name on state.project 
 					// if found
 					// state.project.Name
