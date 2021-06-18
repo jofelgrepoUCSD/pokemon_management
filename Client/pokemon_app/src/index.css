@@ -301,3 +301,15 @@
   align-items: ceter;
   justify-content: center;
 }
+.result-title {
+  display: flex;
+  padding: 20px;
+  align-items: ceter;
+  justify-content: center;
+}
+.result {
+  font-size: 20px;
+  display: flex;
+  align-items: ceter;
+  justify-content: center;
+}

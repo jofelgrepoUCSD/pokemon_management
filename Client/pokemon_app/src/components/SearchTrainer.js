@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {useEffect,useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect, useHistory} from 'react-router-dom';
+import SearchResult from './SearchResult';
 import '../index.css';
 
 
@@ -19,12 +20,14 @@ const SearchTrainer = () => {
 
 	const [trainersList,setTrainersList] = useState([]);
   	const [pokemonList,setPokemonList] = useState([]);
-	const [resultList,setResultList] = useState([]);
 
+
+	const [lookFor,setLookFor] = useState("");
 	const [trainer,setTrainer] = useState("");
 	const [pokemon,setPokemon] = useState("");
 
-
+	const result = [];
+	const history = useHistory();
 
   	useEffect(()=> {
 		
@@ -41,52 +44,45 @@ const SearchTrainer = () => {
    	    });
   	},[])
 
-	  
-
-	  const searchByTrainer = (e) => {
-
-		// console.log(trainer`VsList[1].Name)
-		// console.log(trainer)
+	  const showResult = () => {
+		console.log(result)
+		history.push({
+			pathname:'/searchResult',
+			state: {detail: result}
+		})
+	  }
+	  const searchNow = (e) => {
 		e.preventDefault();
+		//const result = []
+		// First search in the trainer's list
 		for (var i =0; i < trainersList.length;i++){
-
-			if(trainersList[i].Name == trainer){
-				console.log("Trainer is", trainersList[i].Name);
+			if(trainersList[i].Name == lookFor){
+				result.push(trainersList[i].Name)
+				//go To result page maybe fire a method
+				showResult();
+				return
 			}
 		}
-	  }
-
-	  const searchByPokemon = (e) => {
-		
-		e.preventDefault();
+		// If user's input is a pokemon then search the pokemon list
 		for (var i = 0; i < pokemonList.length;i++){
-			if(pokemonList[i].Name === pokemon){
-				console.log(pokemonList[i].TrainerName);
-			}			
+			if(pokemonList[i].Name == lookFor){
+				result.push(pokemonList[i].TrainerName)
+			}
+		}
+		if (result.length != 0){
+			showResult();
 		}
 	  }
-
 
 	return (
 
     <div className="App">
 		
-		<form className="trainer-form" onSubmit={searchByTrainer}>
+		<form className="trainer-form" onSubmit={searchNow}>
 			<h1 className="search-trainer-title">Search Trainer</h1>
 			<div className="trainer-input-field">
-				<label htmlFor="Trainer">Search by Trainer: </label>
-				<input type="text" id="Trainer" onChange={e => setTrainer(e.target.value)}></input> 
-			</div>
-			<div className="btn-div">
-				  <button className="trainer-search-btn">Search</button>
-			</div>
-		</form>
-
-
-		<form className="trainer-form" onSubmit={searchByPokemon}>
-			<div className="trainer-input-field">
-				<label htmlFor="Pokemon">Search by Pokemon: </label>
-				<input type="text" id="Pokemon" onChange={e => setPokemon(e.target.value)}></input> 
+				<label htmlFor="Trainer">Search: </label>
+				<input type="text" id="Trainer" onChange={e => setLookFor(e.target.value)}></input> 
 			</div>
 			<div className="btn-div">
 				  <button className="trainer-search-btn">Search</button>
