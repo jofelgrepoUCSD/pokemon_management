@@ -76,8 +76,6 @@ router.get("/trainers/find/:Name",(req,res) => {
 })
 
 
-
-
 // ---------------------------- Routes for Pokemon Table -------------------------------- //
 
 /** 
