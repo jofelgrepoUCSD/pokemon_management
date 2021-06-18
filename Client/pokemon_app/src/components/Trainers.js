@@ -4,28 +4,31 @@ import {Link} from 'react-router-dom';
 import DeletePokemon from './DeletePokemon';
 import DeleteTrainer from './DeleteTrainer';
 import '../index.css';
+import {useSelector, useDispatch} from 'react-redux';
+import {setProject} from '../redux/actions/ProjectActions';
 
 
 const Trainer = () => {
 
-	const [trainersList,setTrainersList] = useState([]);
-  	const [pokemonList,setPokemonList] = useState([]);
-  
-  	// Run immediately when page renders
-  	useEffect(()=> {
-  	  axios.get("http://localhost:3001/api/trainers/getall").then((res)=>{
-  	    setTrainersList(res.data);
-  	    console.log(res);
-  	  });
+	// Implementing Redux
+	const project = useSelector((state) => state.rootReducer.project); 
+    const dispatch = useDispatch();
 
-	  axios.get("http://localhost:3001/api/pokemons/get").then((res)=>{
-	  	setPokemonList(res.data);
-	  	console.log(res);
-   	  });
-  	},[])
+	// Fetch Product
+	const fetchProject = () => {
+  	  	axios.get("http://localhost:3001/api/trainers/getall").then((res)=>{
+  	  	//   setTrainersList(res.data);
+		  dispatch(setProject(res.data))
+  	  	});
+	}
+
+	useEffect( () => {
+		fetchProject();
+	},[])
+
+	console.log(project)
 
 	return (
-
     <div className="App">
 		
 	  <Link to="/addTrainer">
@@ -34,7 +37,7 @@ const Trainer = () => {
 	  <Link to="/search">
 	  	<button className="search-trainer-btn">Search Trainer</button>
 	  </Link>
-      {trainersList.map((trainer,key) => {
+      {project.map((trainer,key) => {
         return <div className="trainer-title">
                  <span className="card-title"><strong>{trainer.Name}</strong></span>
 				 <DeleteTrainer trainer={trainer}> </DeleteTrainer>

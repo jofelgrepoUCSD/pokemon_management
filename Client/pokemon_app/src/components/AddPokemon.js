@@ -26,6 +26,7 @@ const AddPokemon = (props) => {
 			Type: type,
 			TrainerName: trainer,
 		}).then((res)=>{
+			
 			console.log(res)
 		})
 		history.push('/');
