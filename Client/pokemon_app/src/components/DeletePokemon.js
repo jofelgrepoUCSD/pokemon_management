@@ -2,21 +2,31 @@ import qs from 'qs';
 import axios from 'axios';
 import {useEffect,useState} from 'react';
 import {useHistory,Link} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux'
+import {deletePokemon} from '../redux/actions/ProjectActions'
+
+
 import '../index.css';
 
 const DeletePokemon = (props) => {
 
 	const {pokemon} = props;
 	const history = useHistory();
-	
+	const dispatch = useDispatch();
+
+
 	const handleDelete = () =>{
 		// Temporary need a redux action here
 		axios.delete("http://localhost:3001/api/pokemons/delete", 
 		{data: {instance: pokemon.instance }}
 		).then((res)=>{
 			console.log(res)
+			dispatch(deletePokemon(
+				{ TrainerName:pokemon.TrainerName,
+				  instance: pokemon.instance,	
+				}))
 		})
-		window.location.reload();
+		//window.location.reload();
 	}
 
 	return (

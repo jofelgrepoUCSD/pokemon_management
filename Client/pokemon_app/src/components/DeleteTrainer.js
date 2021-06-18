@@ -2,11 +2,15 @@ import qs from 'qs';
 import axios from 'axios';
 import {useEffect,useState} from 'react';
 import {useHistory,Link} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux'
+import {deleteTrainer} from '../redux/actions/ProjectActions'
 import '../index.css';
 
 const DeleteTrainer = (props) => {
 
 	 const {trainer} = props;
+
+	 const dispatch = useDispatch();
 	 const history = useHistory();
 	
 	const handleDelete = () =>{
@@ -18,9 +22,9 @@ const DeleteTrainer = (props) => {
 			axios.delete("http://localhost:3001/api/trainers/delete", 
 			{data: {Name: trainer.Name }}
 			).then((res)=>{
+				dispatch(deleteTrainer({Name:trainer.Name}))
 				console.log(res)
 			})
-			window.location.reload();	
 		} else { // -> cannot deleted
 			alert("Need to Clear the pokemon")
 		}

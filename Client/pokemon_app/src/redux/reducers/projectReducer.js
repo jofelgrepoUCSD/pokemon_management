@@ -1,5 +1,4 @@
 import { ActionTypes } from "../constants/action-types"
-
 const initialState = {
 	project:[]
 }
@@ -19,21 +18,38 @@ export const projectReducer = (state = initialState, {type,payload}) => {
 					project: [...state.project,payload]}
 
 
-
 		case ActionTypes.ADD_POKEMON:
-
-				let store = state.project;
-				for(var i = 0; i < store.length; i++){
-					if(store.Name === payload.TrianerName){
-						return {
-							...state, project: [...state.project.Name,"Sheesh"]
-						}
+			return {
+						...state,
+						project: state.project.map((project) => {
+						if (project.Name === payload.TrainerName) {
+							const updatedPokemons = [...project.Pokemons, payload]
+							project.Pokemons = updatedPokemons;
+							return project;
+							} else {
+									return project;
+								}
+						})
 					}
+
+		case ActionTypes.DELETE_TRAINER:
+			return{
+				...state,
+				project: state.project.filter(project => project.Name !== payload.Name)
 				}
-			
 
+		case ActionTypes.DELETE_POKEMON:
+			return{
+				...state,
+				project: state.project.map((project)=>{
+					if(project.Name === payload.TrainerName){
+						project.Pokemons.filter(pokemon => project.instance !== payload.instance)
+					} else {
+						return project;
+					}
+				})
 
-
+			}
 
 
 

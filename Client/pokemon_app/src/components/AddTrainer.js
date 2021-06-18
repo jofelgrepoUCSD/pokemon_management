@@ -48,7 +48,7 @@ const AddTrainer = () => {
 			})); 
 
 		})
-		//history.push('/')
+		history.push('/')
 	}
 	
 
