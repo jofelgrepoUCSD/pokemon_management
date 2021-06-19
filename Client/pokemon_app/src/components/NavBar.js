@@ -4,9 +4,9 @@ const Navbar = () => {
 	return (  
 	
 	<nav className="navbar">
-		<h1>Pokemon World</h1>
+		<a href="/" className="Logo"> Pokemon World</a>
 		<div className="links">
-			<a href="/">Home</a>
+			{/* <a href="/">Home</a> */}
 		</div>
 	</nav>
 	);

@@ -43,15 +43,20 @@ export const projectReducer = (state = initialState, {type,payload}) => {
 				...state,
 				project: state.project.map((project)=>{
 					if(project.Name === payload.TrainerName){
-						project.Pokemons.filter(pokemon => project.instance !== payload.instance)
+						var newPokemon = []	
+						project.Pokemons.map((pokemon) => {
+							if (pokemon.instance !== payload.instance){
+								newPokemon.push(pokemon)
+							}							
+						})
+						project.Pokemons = newPokemon;
+						return project
 					} else {
 						return project;
 					}
 				})
 
 			}
-
-
 
 		default:
 			return state;

@@ -17,7 +17,6 @@ const Trainer = () => {
 	// Fetch Product
 	const fetchProject = () => {
   	  	axios.get("http://localhost:3001/api/trainers/getall").then((res)=>{
-  	  	//   setTrainersList(res.data);
 		  dispatch(setProject(res.data))
   	  	});
 	}
@@ -25,8 +24,6 @@ const Trainer = () => {
 	useEffect( () => {
 		fetchProject();
 	},[])
-
-	console.log(project)
 
 	return (
     <div className="App">
@@ -37,6 +34,7 @@ const Trainer = () => {
 	  <Link to="/search">
 	  	<button className="search-trainer-btn">Search Trainer</button>
 	  </Link>
+
       {project.map((trainer,key) => {
         return <div className="trainer-title">
                  <span className="card-title"><strong>{trainer.Name}</strong></span>
@@ -46,9 +44,10 @@ const Trainer = () => {
                   {trainer.Pokemons.map((pokemon,index) => {
 					  return (
 					  	<div className="pokemon-disp"> 
-							{pokemon.Name} -
-							Type: {pokemon.Type} -
-							Move: {pokemon.Move} 
+							<h3> {pokemon.Name} </h3> <br></br>
+							Type : {pokemon.Type} ,
+							Move : {pokemon.Move} ,
+							ID: {pokemon.ID} 
 							<DeletePokemon pokemon={pokemon}></DeletePokemon> 
 					 	</div>
 					  )// end of return
@@ -56,13 +55,7 @@ const Trainer = () => {
 	    		<Link to={'/addPokemon/'+ trainer.Name}>
 	  					<button className="add-pokemon-btn">Add pokemon</button>
 	   			</Link>
-
-
-
                 </div> 
-	  				{/* <Link to="/addPokemon">
-	  					<button className="add-pokemon">Add pokemon</button>
-	  				</Link> */}
               </div>
       })} 
 

@@ -27,6 +27,30 @@ const DeletePokemon = (props) => {
 				}))
 		})
 		//window.location.reload();
+
+		axios.get("http://localhost:3001/api/trainers/getone?Name=	" + pokemon.TrainerName,
+		).then((res)=>{
+			console.log(res);
+			updateUser(res);
+		}).catch(err=> console.log(err));
+
+		const updateUser = (res) => {
+
+			console.log("ondelete",res)
+			var curr_owned = res.data[0].Pokemon_owned;
+			var arr_owned = curr_owned.split(",");
+			let newValue = arr_owned.filter(id => id != pokemon.ID);
+			console.log(newValue);
+
+
+			axios.put("http://localhost:3001/api/trainers/put",{
+				data: {
+						Name: pokemon.TrainerName,
+						Pokemon_owned:newValue.toString(),
+				}}).then((res)=>{
+					console.log("PUT")
+				})
+		}
 	}
 
 	return (
