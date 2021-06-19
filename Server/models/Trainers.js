@@ -8,7 +8,7 @@ module.exports = (sequelize,DataTypes)=>{
 		},
 		Pokemon_owned: {
 			type: DataTypes.STRING,
-			allowNull:true,
+			allowNull: false,
 		}
 	}, 
 	{

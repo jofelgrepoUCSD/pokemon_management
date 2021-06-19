@@ -1,48 +1,58 @@
 import axios from 'axios';
 import {useEffect,useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux';
+import {addTrainer} from '../redux/actions/ProjectActions'
 import '../index.css';
+
 
 const AddTrainer = () => {
 
-	const [name,setName] = useState("");
-	const [owned,setOwned] = useState(null);
+	const dispatch = useDispatch();
+
+	// Redux Implementation
+	const [trainerForm,setTrainerForm] = useState({
+		Name:" ",
+		Pokemon_owned: " ",
+	});
+
+	const handleInputChange = (e) => {
+		e.preventDefault()
+		const {name,value} = e.target;
+		setTrainerForm({
+			...trainerForm, 
+			[name]:value
+		})
+	}
 	const history = useHistory();
 
+
 	const submitValue = () => {
-		// Temporary need a redux action here
+
 		axios.post("http://localhost:3001/api/trainers/post", {
-			Name: name,
-			Pokemon_owned: owned,
-		}).then((res)=>{
+			Name: trainerForm.Name, 
+			Pokemon_owned: "",
+			}).then((res) => {
 			console.log(res)
+			dispatch(addTrainer({
+				Name: trainerForm.Name,
+				Pokemon_owned: "",
+				Pokemons: []
+			})); 
+
 		})
 		history.push('/')
-		window.location.reload();
 	}
+	
 
 	return (
 		<div className="trainer-title">
 		<h1 className="add-trainer-title"> Add a Trainer</h1>
-		<input className="enter-name" tpye="text" placeholder="Name" onChange={e => setName(e.target.value)}></input>
+		<input className="enter-name" type="text" placeholder="Name" name="Name" autoComplete="off" onChange={handleInputChange}></input>
 		<br></br>
 		<button className="add-trainer-button" onClick={submitValue}> ADD </button>
 		</div>	
 	 );
 }
+
 export default AddTrainer;
-
-		// <div>
-		// 	<form className="edit-form" onSubmit={this.handleSubmit}>
-        //             <h5 className="add-trainer">Add Trainer</h5>
-        //             <div className="input-field">
-        //                 <label htmlFor="name">Name</label>
-        //                 <input type="text" id="Name" onChange={this.handleChange} />
-        //             </div>
-        //         </form>
-		// </div>
-
-		// const frmdetails = {
-		// 	'Name': name,
-		// 	'Pokemon_owned': null,
-		// }

@@ -16,14 +16,3 @@ function Home() {
 } 
 
 export default Home;
-
-  
-  
-   // const addTrainer = () => {
-  //   axios.post("http://localhost:3001/api/trainers/post", {
-  //     Name: trainerName,
-  //     Pokemon_owned: owned,
-  //   }).then(() => {
-  //     console.log("success");
-  //   });
-  // };

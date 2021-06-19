@@ -30,6 +30,33 @@ router.get("/trainers/getall",(req,res) => {
 })
 
 
+
+/** 
+ * 	GET a single trainer with Pokemon_owned
+ * 
+*/
+router.get("/trainers/getone",(req,res) => {
+	db.Trainers.findAll({where:{Name:req.query.Name}}).then(trainer => res.send(trainer));
+})
+
+/** 
+ * 	Findone a single trainer with Pokemon_owned
+ * 
+*/
+router.get("/trainers/findone",jsonParser,(req,res) => {
+	db.Trainers.findOne({where: {Name:req.body.Name}}).then(trainers => res.send(trainers));
+})
+
+/** 
+ * 	Update trainer.
+*/
+router.put("/trainers/put",jsonParser,(req,res)=>{
+	db.Trainers.update({Pokemon_owned: req.body.data.Pokemon_owned},
+					   {where: {Name:req.body.data.Name}}).then(updatedPost => res.send(updatedPost));
+})
+
+
+
 /** 
  * 	GET all the trainers only  
  * 

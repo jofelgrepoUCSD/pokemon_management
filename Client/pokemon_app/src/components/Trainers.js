@@ -4,28 +4,28 @@ import {Link} from 'react-router-dom';
 import DeletePokemon from './DeletePokemon';
 import DeleteTrainer from './DeleteTrainer';
 import '../index.css';
+import {useSelector, useDispatch} from 'react-redux';
+import {setProject} from '../redux/actions/ProjectActions';
 
 
 const Trainer = () => {
 
-	const [trainersList,setTrainersList] = useState([]);
-  	const [pokemonList,setPokemonList] = useState([]);
-  
-  	// Run immediately when page renders
-  	useEffect(()=> {
-  	  axios.get("http://localhost:3001/api/trainers/getall").then((res)=>{
-  	    setTrainersList(res.data);
-  	    console.log(res);
-  	  });
+	// Implementing Redux
+	const project = useSelector((state) => state.rootReducer.project); 
+    const dispatch = useDispatch();
 
-	  axios.get("http://localhost:3001/api/pokemons/get").then((res)=>{
-	  	setPokemonList(res.data);
-	  	console.log(res);
-   	  });
-  	},[])
+	// Fetch Product
+	const fetchProject = () => {
+  	  	axios.get("http://localhost:3001/api/trainers/getall").then((res)=>{
+		  dispatch(setProject(res.data))
+  	  	});
+	}
+
+	useEffect( () => {
+		fetchProject();
+	},[])
 
 	return (
-
     <div className="App">
 		
 	  <Link to="/addTrainer">
@@ -34,7 +34,8 @@ const Trainer = () => {
 	  <Link to="/search">
 	  	<button className="search-trainer-btn">Search Trainer</button>
 	  </Link>
-      {trainersList.map((trainer,key) => {
+
+      {project.map((trainer,key) => {
         return <div className="trainer-title">
                  <span className="card-title"><strong>{trainer.Name}</strong></span>
 				 <DeleteTrainer trainer={trainer}> </DeleteTrainer>
@@ -43,9 +44,10 @@ const Trainer = () => {
                   {trainer.Pokemons.map((pokemon,index) => {
 					  return (
 					  	<div className="pokemon-disp"> 
-							{pokemon.Name} -
-							Type: {pokemon.Type} -
-							Move: {pokemon.Move} 
+							<h3> {pokemon.Name} </h3> <br></br>
+							Type : {pokemon.Type} ,
+							Move : {pokemon.Move} ,
+							ID: {pokemon.ID} 
 							<DeletePokemon pokemon={pokemon}></DeletePokemon> 
 					 	</div>
 					  )// end of return
@@ -53,13 +55,7 @@ const Trainer = () => {
 	    		<Link to={'/addPokemon/'+ trainer.Name}>
 	  					<button className="add-pokemon-btn">Add pokemon</button>
 	   			</Link>
-
-
-
                 </div> 
-	  				{/* <Link to="/addPokemon">
-	  					<button className="add-pokemon">Add pokemon</button>
-	  				</Link> */}
               </div>
       })} 
 

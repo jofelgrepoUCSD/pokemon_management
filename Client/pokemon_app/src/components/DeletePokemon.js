@@ -2,21 +2,55 @@ import qs from 'qs';
 import axios from 'axios';
 import {useEffect,useState} from 'react';
 import {useHistory,Link} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux'
+import {deletePokemon} from '../redux/actions/ProjectActions'
+
+
 import '../index.css';
 
 const DeletePokemon = (props) => {
 
 	const {pokemon} = props;
 	const history = useHistory();
-	
+	const dispatch = useDispatch();
+
+
 	const handleDelete = () =>{
 		// Temporary need a redux action here
 		axios.delete("http://localhost:3001/api/pokemons/delete", 
 		{data: {instance: pokemon.instance }}
 		).then((res)=>{
 			console.log(res)
+			dispatch(deletePokemon(
+				{ TrainerName:pokemon.TrainerName,
+				  instance: pokemon.instance,	
+				}))
 		})
-		window.location.reload();
+		//window.location.reload();
+
+		axios.get("http://localhost:3001/api/trainers/getone?Name=	" + pokemon.TrainerName,
+		).then((res)=>{
+			console.log(res);
+			updateUser(res);
+		}).catch(err=> console.log(err));
+
+		const updateUser = (res) => {
+
+			console.log("ondelete",res)
+			var curr_owned = res.data[0].Pokemon_owned;
+			var arr_owned = curr_owned.split(",");
+			let newValue = arr_owned.filter(id => id != pokemon.ID);
+			console.log(newValue);
+
+
+			axios.put("http://localhost:3001/api/trainers/put",{
+				data: {
+						Name: pokemon.TrainerName,
+						Pokemon_owned:newValue.toString(),
+				}}).then((res)=>{
+					console.log("PUT")
+				})
+		}
 	}
 
 	return (
