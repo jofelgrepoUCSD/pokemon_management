@@ -1,7 +1,7 @@
 import axios from 'axios';
-import {useEffect,useState} from 'react';
-import {Link, useHistory} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import {useState} from 'react';
+import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 import {addTrainer} from '../redux/actions/ProjectActions'
 import '../index.css';
 
@@ -16,6 +16,7 @@ const AddTrainer = () => {
 		Pokemon_owned: " ",
 	});
 
+	// Handle user input
 	const handleInputChange = (e) => {
 		e.preventDefault()
 		const {name,value} = e.target;
@@ -26,7 +27,7 @@ const AddTrainer = () => {
 	}
 	const history = useHistory();
 
-
+	// Submit it to the database
 	const submitValue = () => {
 
 		axios.post("http://localhost:3001/api/trainers/post", {
@@ -34,6 +35,7 @@ const AddTrainer = () => {
 			Pokemon_owned: "",
 			}).then((res) => {
 			console.log(res)
+			// Submit it on Redux Store
 			dispatch(addTrainer({
 				Name: trainerForm.Name,
 				Pokemon_owned: "",

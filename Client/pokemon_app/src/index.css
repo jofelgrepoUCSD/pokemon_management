@@ -13,10 +13,21 @@
   background-position-y: 15px;
 }
 .Logo {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   text-decoration: none;
   font-size: 40px;
   font-family: Pokemon;
   margin-left: 740px;
+}
+
+.Poke-font {
+  text-shadow: 5px 5px rgb(43, 112, 241), 5px 5px rgb(43, 112, 241),
+    5px 1px rgb(43, 112, 241), 7px 7px black;
+  text-decoration: none;
+  font-size: 40px;
+  font-family: Pokemon;
+  color: rgb(245, 202, 13);
+  /* margin-left: 740px; */
 }
 
 .trainer-title {

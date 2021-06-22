@@ -1,19 +1,15 @@
 import axios from 'axios';
 import {useEffect,useState} from 'react';
-import {useHistory,useLocation} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux'
+import {useHistory} from 'react-router-dom';
+import {useDispatch} from 'react-redux'
 import {addPokemon} from '../redux/actions/ProjectActions'
-// import {Link} from 'react-router-dom';
 import '../index.css';
 
 
 const AddPokemon = (props) => {
 
-
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const location = useLocation();
-
 	const {trainer} = props.match.params;
 
 	// Implementing Redux
@@ -24,7 +20,6 @@ const AddPokemon = (props) => {
 		Move: " ",
 	})
 
-	const[targetTrainer,setTargetTrainer] = useState([])
 	const[alltrainer,setAllTrainer] = useState([])
 
 	useEffect( () => {
@@ -44,6 +39,7 @@ const AddPokemon = (props) => {
 
 	const submitValue = async (e) => {
 
+		// Submit pokemon to database
 		e.preventDefault();
 		axios.post("http://localhost:3001/api/pokemons/post", {
 			ID: pokemonForm.ID, 
@@ -52,6 +48,7 @@ const AddPokemon = (props) => {
 			Type: pokemonForm.Type,
 			TrainerName: trainer,
 			}).then((res) => {
+			// Update the Redux Store
 			dispatch(addPokemon({
 				instance: res.data.instance,
 				ID: pokemonForm.ID, 
@@ -62,14 +59,14 @@ const AddPokemon = (props) => {
 			}));
 		})
 		
-		// 1.  Kuhanin Trainer Table ng iuupdate
+		// Get the target trainer, note: get request can't have a body
 		axios.get("http://localhost:3001/api/trainers/getone?Name=	" + trainer,
 		).then((res)=>{
 			console.log(res);
-			setTargetTrainer(res);
 			updateUser(res);
 		}).catch(err=> console.log(err));
 
+		// The target trainer is passed here then update its pokemon_owned table.
 		const updateUser = (res) => {
 			var newValue = ""
 			var curr_owned = res.data[0].Pokemon_owned;
@@ -78,7 +75,7 @@ const AddPokemon = (props) => {
 			} else {
 			 	newValue = curr_owned + "," + pokemonForm.ID;
 			}
-
+			// Make the update to the database
 			axios.put("http://localhost:3001/api/trainers/put",{
 				data: {
 						Name: trainer,
@@ -87,13 +84,7 @@ const AddPokemon = (props) => {
 					console.log("PUT")
 				})
 		}
-
-		// 2. Logic ng string to array tapos concatenate yun bagong pokemon ID
-
-		// 3. axios.put para i update
 		history.push('/')
-
-		
 	}
 
 	return ( 

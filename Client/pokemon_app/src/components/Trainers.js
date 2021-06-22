@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {useEffect,useState} from 'react';
+import {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import DeletePokemon from './DeletePokemon';
 import DeleteTrainer from './DeleteTrainer';
@@ -11,10 +11,12 @@ import {setProject} from '../redux/actions/ProjectActions';
 const Trainer = () => {
 
 	// Implementing Redux
+	// We get what ever we have from Redux store
+	// very similar to map state to props
 	const project = useSelector((state) => state.rootReducer.project); 
     const dispatch = useDispatch();
 
-	// Fetch Product
+	// Fetch Product from database
 	const fetchProject = () => {
   	  	axios.get("http://localhost:3001/api/trainers/getall").then((res)=>{
 		  dispatch(setProject(res.data))

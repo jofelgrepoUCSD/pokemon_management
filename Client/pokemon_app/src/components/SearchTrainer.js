@@ -1,34 +1,20 @@
 import axios from 'axios';
 import {useEffect,useState} from 'react';
-import {Link, Redirect, useHistory} from 'react-router-dom';
-import SearchResult from './SearchResult';
+import {useHistory} from 'react-router-dom';
 import '../index.css';
 
 
 const SearchTrainer = () => {
 
-	 /*  Approach: 
-	  *	 Create 2 search bar one for trainer and pokemon
-	  *	 Fetch both trainer list and Pokemon list
-	  *	 First search bar is for trainer and uses trainers list
-	  *	 Second search bar is for pokemon and uses pokemon list
-	  *  	- we use pokemon list to return its owner.
-	  *  Redirect to a screen to display trainer's party.
-	  *  
-	  *   Note: Not sure why I return a list of trainer.
-	  */
-
 	const [trainersList,setTrainersList] = useState([]);
   	const [pokemonList,setPokemonList] = useState([]);
 
-
 	const [lookFor,setLookFor] = useState("");
-	const [trainer,setTrainer] = useState("");
-	const [pokemon,setPokemon] = useState("");
 
 	const result = [];
 	const history = useHistory();
 
+	// First fetch all the data from database,both trainer and pokemon
   	useEffect(()=> {
 		
 		// Get all the trainer
@@ -44,34 +30,35 @@ const SearchTrainer = () => {
    	    });
   	},[])
 
-	  const showResult = () => {
-		console.log(result)
-		history.push({
-			pathname:'/searchResult',
-			state: {detail: result}
-		})
-	  }
-	  const searchNow = (e) => {
+	// First search inside the trainer table to find a trainer 
+	const searchNow = (e) => {
 		e.preventDefault();
-		//const result = []
-		// First search in the trainer's list
 		for (var i =0; i < trainersList.length;i++){
+			// if found add the result to the list and call showResult()
 			if(trainersList[i].Name == lookFor){
 				result.push(trainersList[i].Name)
-				//go To result page maybe fire a method
 				showResult();
 				return
 			}
 		}
-		// If user's input is a pokemon then search the pokemon list
+		// If user's input is a pokemon then search the pokemon list instead
 		for (var i = 0; i < pokemonList.length;i++){
 			if(pokemonList[i].Name == lookFor){
 				result.push(pokemonList[i].TrainerName)
 			}
 		}
+		// Call showResult method only if result list is non empty
 		if (result.length != 0){
 			showResult();
 		}
+	  }
+
+	  // go to result page and pass the result as a prop
+	  const showResult = () => {
+		history.push({
+			pathname:'/searchResult',
+			state: {detail: result}
+		})
 	  }
 
 	return (
